@@ -19,7 +19,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install Dependencies
-        run: pip install pymongo certifi pandas smtplib xlsxwriter
+        run: pip install pymongo certifi pandas xlsxwriter
 
       - name: Run Monthly Report Script
         env:
