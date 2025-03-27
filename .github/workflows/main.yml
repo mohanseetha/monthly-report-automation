@@ -1,0 +1,33 @@
+name: Monthly Latecomers Report
+
+on:
+  schedule:
+    - cron: "30 4 1 * *"
+  workflow_dispatch:
+
+jobs:
+  generate-monthly-report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install Dependencies
+        run: pip install pymongo certifi pandas smtplib xlsxwriter
+
+      - name: Run Monthly Report Script
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+          ALL_MAIL: ${{ secrets.ALL_MAIL }}
+          DEPT_MAPPINGS: ${{ secrets.DEPT_MAPPINGS }}
+        run: python monthly_report.py
